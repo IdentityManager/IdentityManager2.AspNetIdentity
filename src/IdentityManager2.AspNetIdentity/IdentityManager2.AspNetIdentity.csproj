@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>IdentityManager is an user management tool for ASP.NET Core Identity. Maintained by Rock Solid Knowledge.</Description>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix>beta2</VersionSuffix>
+    <VersionSuffix>beta3</VersionSuffix>
     <Authors>Scott Brady</Authors>
     <AssemblyName>IdentityManager2.AspNetIdentity</AssemblyName>
     <PackageId>IdentityManager2.AspNetIdentity</PackageId>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityManager2" Version="1.0.0-beta4" />
+    <PackageReference Include="IdentityManager2" Version="1.0.0-beta5" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.1.0" />
   </ItemGroup>
 
