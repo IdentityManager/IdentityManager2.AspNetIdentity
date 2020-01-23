@@ -32,7 +32,7 @@ namespace IdentityManager2.AspNetIdentity
             var email = userManager.Options.Tokens.EmailConfirmationTokenProvider; // TODO: and for rest...
             if (!userManager.Options.Tokens.ProviderMap.ContainsKey(email)) { }
 
-            RoleClaimType = Constants.ClaimTypes.Role;
+            RoleClaimType = IdentityManagerConstants.ClaimTypes.Role;
         }
 
         public AspNetCoreIdentityManagerService(
@@ -65,13 +65,13 @@ namespace IdentityManager2.AspNetIdentity
 
         public async Task<IdentityManagerResult<CreateResult>> CreateUserAsync(IEnumerable<PropertyValue> properties)
         {
-            var usernameClaim = properties.Single(x => x.Type == Constants.ClaimTypes.Username);
-            var passwordClaim = properties.Single(x => x.Type == Constants.ClaimTypes.Password);
+            var usernameClaim = properties.Single(x => x.Type == IdentityManagerConstants.ClaimTypes.Username);
+            var passwordClaim = properties.Single(x => x.Type == IdentityManagerConstants.ClaimTypes.Password);
 
             var username = usernameClaim.Value;
             var password = passwordClaim.Value;
 
-            var exclude = new[] { Constants.ClaimTypes.Username, Constants.ClaimTypes.Password };
+            var exclude = new[] { IdentityManagerConstants.ClaimTypes.Username, IdentityManagerConstants.ClaimTypes.Password };
             var otherProperties = properties.Where(x => !exclude.Contains(x.Type)).ToArray();
 
             var metadata = await GetMetadataAsync();
@@ -237,10 +237,10 @@ namespace IdentityManager2.AspNetIdentity
         {
             ValidateSupportsRoles();
 
-            var nameClaim = properties.Single(x => x.Type == Constants.ClaimTypes.Name);
+            var nameClaim = properties.Single(x => x.Type == IdentityManagerConstants.ClaimTypes.Name);
             var name = nameClaim.Value;
 
-            var exclude = new[] { Constants.ClaimTypes.Name };
+            var exclude = new[] { IdentityManagerConstants.ClaimTypes.Name };
             var otherProperties = properties.Where(x => !exclude.Contains(x.Type)).ToArray();
 
             var metadata = await GetMetadataAsync();
@@ -377,15 +377,15 @@ namespace IdentityManager2.AspNetIdentity
             var update = new List<PropertyMetadata>();
             if (UserManager.SupportsUserPassword)
             {
-                update.Add(PropertyMetadata.FromFunctions<TUser, string>(Constants.ClaimTypes.Password, u => Task.FromResult<string>(null), SetPassword, "Password", PropertyDataType.Password, true));
+                update.Add(PropertyMetadata.FromFunctions<TUser, string>(IdentityManagerConstants.ClaimTypes.Password, u => Task.FromResult<string>(null), SetPassword, "Password", PropertyDataType.Password, true));
             }
             if (UserManager.SupportsUserEmail)
             {
-                update.Add(PropertyMetadata.FromFunctions<TUser, string>(Constants.ClaimTypes.Email, u => GetEmail(u), SetEmail, "Email", PropertyDataType.Email));
+                update.Add(PropertyMetadata.FromFunctions<TUser, string>(IdentityManagerConstants.ClaimTypes.Email, u => GetEmail(u), SetEmail, "Email", PropertyDataType.Email));
             }
             if (UserManager.SupportsUserPhoneNumber)
             {
-                update.Add(PropertyMetadata.FromFunctions<TUser, string>(Constants.ClaimTypes.Phone, u => GetPhone(u), SetPhone, "Phone", PropertyDataType.String));
+                update.Add(PropertyMetadata.FromFunctions<TUser, string>(IdentityManagerConstants.ClaimTypes.Phone, u => GetPhone(u), SetPhone, "Phone", PropertyDataType.String));
             }
             if (UserManager.SupportsUserTwoFactor)
             {
@@ -403,8 +403,8 @@ namespace IdentityManager2.AspNetIdentity
             }
 
             var create = new List<PropertyMetadata>();
-            create.Add(PropertyMetadata.FromProperty<TUser>(x => x.UserName, name: Constants.ClaimTypes.Username, required: true));
-            create.Add(PropertyMetadata.FromFunctions<TUser, string>(Constants.ClaimTypes.Password, u => Task.FromResult<string>(null), SetPassword, "Password", PropertyDataType.Password, true));
+            create.Add(PropertyMetadata.FromProperty<TUser>(x => x.UserName, name: IdentityManagerConstants.ClaimTypes.Username, required: true));
+            create.Add(PropertyMetadata.FromFunctions<TUser, string>(IdentityManagerConstants.ClaimTypes.Password, u => Task.FromResult<string>(null), SetPassword, "Password", PropertyDataType.Password, true));
 
             var user = new UserMetadata
             {
@@ -421,7 +421,7 @@ namespace IdentityManager2.AspNetIdentity
                 SupportsCreate = true,
                 SupportsDelete = true,
                 CreateProperties = new[] {
-                    PropertyMetadata.FromProperty<TRole>(x=>x.Name, name: Constants.ClaimTypes.Name, required: true),
+                    PropertyMetadata.FromProperty<TRole>(x=>x.Name, name: IdentityManagerConstants.ClaimTypes.Name, required: true),
                 }
             };
 
@@ -604,7 +604,7 @@ namespace IdentityManager2.AspNetIdentity
             if (UserManager.SupportsUserClaim)
             {
                 var claims = await UserManager.GetClaimsAsync(user);
-                var name = claims.Where(x => x.Type == Constants.ClaimTypes.Name).Select(x => x.Value).FirstOrDefault();
+                var name = claims.Where(x => x.Type == IdentityManagerConstants.ClaimTypes.Name).Select(x => x.Value).FirstOrDefault();
                 if (!string.IsNullOrWhiteSpace(name)) return name;
             }
 
